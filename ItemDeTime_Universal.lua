@@ -1,7 +1,6 @@
 if shared._ then return end; shared._ = true
 
 local Player = game.Players.LocalPlayer
-local Backpack = Player.Backpack
 local Teams = game:GetService("Teams")
 local Undo = {}
 
@@ -40,7 +39,7 @@ for i,t in next, Teams:GetChildren() do
         if not v:IsA("Tool") then continue end
         Undo[v] = t
         folder:AddSwitch(v.Name, function(s)
-            v.Parent = s and Backpack or t
+            v.Parent = s and Player.Backpack or t
         end)
     end
 end
@@ -55,9 +54,8 @@ function OnChar(char)
     end
     
     Player.CharacterAdded:wait()
-    print(Backpack)
     for i,v in next, Undo do
-        i.Parent = Backpack
+        i.Parent = Player.Backpack
     end
 end
 
