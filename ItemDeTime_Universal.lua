@@ -8,7 +8,7 @@ local Undo = {}
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/loglizzy/Elerium-lib/main/lib.min.lua"))()
 local Window,WRender = Library:AddWindow("Racismo 2.0.1 [BETA]", {
 	main_color = Color3.fromRGB(45, 45, 45),
-	min_size = Vector2.new(350, 400),
+	min_size = Vector2.new(350, 600),
 	toggle_key = Enum.KeyCode.RightShift,
 	can_resize = true,
 })
@@ -16,13 +16,14 @@ local Window,WRender = Library:AddWindow("Racismo 2.0.1 [BETA]", {
 WRender.ImageColor3 = Color3.fromRGB(55,55,55)
 
 -- Tools Tab 
-local Tools = Window:AddTab("Items")
+local Tools = Window:AddTab("Times")
 
 Tools:AddLabel("Times")
 for i,t in next, Teams:GetChildren() do
     local gc = t:GetChildren()
     local folder,render
-    if #gc > 0 then
+    
+    if t:FindFirstChildOfClass("Tool") then
         local cl = t.TeamColor.Color
         folder,render = Tools:AddFolder(
             ' <b><font color="rgb(180,180,180)">'..#gc..'</font></b>  '
@@ -37,14 +38,47 @@ for i,t in next, Teams:GetChildren() do
     
     for i,v in next, gc do
         if not v:IsA("Tool") then continue end
-        Undo[v] = t
         folder:AddSwitch(v.Name, function(s)
-            v.Parent = s and Player.Backpack or t
+            Undo[v] = s and t
+            v.Parent = (s and Player.Backpack) or t
         end)
     end
 end
 
 Tools:Show()
+
+-- Geral
+local Geral = Window:AddTab("Geral")
+for i,t in next, game.ReplicatedStorage:GetChildren() do
+    local gc = t:GetChildren()
+    local folder,render
+    
+    local total = 0
+    for i,v in next, gc do
+        if v:IsA("Tool") then
+            total = total + 1
+        end
+    end
+    
+    if t:FindFirstChildOfClass("Tool")  then
+        folder,render = Geral:AddFolder(
+            ' <b><font color="rgb(180,180,180)">'..total..'</font></b>  '
+            ..t.Name
+        )
+        
+        render.Button.RichText = true
+        render.ImageTransparency = 0.6
+    end
+    
+    for i,v in next, gc do
+        if not v:IsA("Tool") then continue end
+        
+        folder:AddSwitch(v.Name, function(s)
+            Undo[v] = s and t
+            v.Parent = (s and Player.Backpack) or t
+        end)
+    end
+end
 
 -- Backpack Undo
 function OnChar(char)
