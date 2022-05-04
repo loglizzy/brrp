@@ -32,7 +32,6 @@ function switch(self, data, state)
     local gun,old = self.gun,self.old
     for i,v in next, data do
         Guns[gun][i] = state and v or old[i]
-        warn(gun, state and v or old[i])
     end
 end
 
@@ -89,9 +88,16 @@ Tools:Show()
 local Geral = Window:AddTab("Geral")
 
 FoldInto(Geral, Storage)
-for i,t in next, Storage:GetChildren() do
-    FoldInto(Geral, t)
+function _foldloop(v)
+    for i,t in next, v:GetChildren() do
+        FoldInto(Geral, t)
+        if t:IsA("Folder") then
+            _foldloop(t)
+        end
+    end
 end
+
+_foldloop(Storage)
 
 -- ACS mods
 local Mods = Window:AddTab("Mods")
@@ -146,7 +152,6 @@ end)
 ACS:AddSlider("Tiros em rajada", function(num)
     for i,v in next, MCache do
         Guns[v.gun].BurstShot = num
-        warn(num)
     end
 end,{min = 2, max = 10})
 
