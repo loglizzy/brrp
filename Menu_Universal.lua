@@ -17,7 +17,20 @@ function ChildrenOfTool(gc)
 end
 
 -- GUI
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/loglizzy/Elerium-lib/main/lib.min.lua"))()
+local _raw
+local _liblink = "https://raw.githubusercontent.com/loglizzy/Elerium-lib/main/lib.min.lua"
+if isfile and readfile then
+    if isfile("log-Elerium.lib") then
+        _raw = readfile("log-Elerium.lib")
+    else
+        _raw = game:HttpGet(_liblink)
+        writefile("log-Elerium.lib", _raw)
+    end
+else
+    _raw = game:HttpGet(_liblink)
+end
+
+local Library = loadstring(_raw)()
 local Window,WRender = Library:AddWindow("Racismo 2.0.1 [BETA]", {
 	main_color = Color3.fromRGB(45, 45, 45),
 	min_size = Vector2.new(350, 600),
