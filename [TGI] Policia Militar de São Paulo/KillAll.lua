@@ -45,10 +45,11 @@ if char:FindFirstChildOfClass("Tool") then
 end
 
 while not gun do
-    for i,v in next, game.Players:GetPlayers() do
-        local tool = v.Character and v.Character:FindFirstChildOfClass("Tool")
-        if tool and tool:FindFirstChild("ACS_Animations") then
-            pawn,gun = v,tool; break
+    for i,v in next, game.Teams:GetChildren() do
+        for i,v in next, v:GetChildren() do
+            if v:IsA("Tool") and v and v:FindFirstChild("ACS_Animations") then
+                gun = v
+            end
         end
     end; task.wait()
 end
@@ -56,7 +57,7 @@ end
 -- Main
 local data = require(gun:GetChildren()[1])
 evt.Equip:FireServer(gun, 1, data, mod)
-wait(1)
+wait(.5)
 
 for i,v in next, game.Players:GetPlayers() do
     local hum = v.Character and v.Character:FindFirstChild("Humanoid")
