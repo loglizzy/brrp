@@ -65,3 +65,6 @@ for i,v in next, game.Players:GetPlayers() do
     task.spawn(evt.TigreDG.InvokeServer,evt.TigreDG,
         gun, hum, 1, 1, data, mod, nil, nil, id)
 end
+
+wait(4)
+plr:Kick("Saindo para evitar banimentos, espere antes de entrar denovo")
