@@ -1,3 +1,5 @@
+-- Script experimental, feito para testar metodos de burlar diversas protecoes do ACS
+
 -- Fiz esse loop no ReplicatedStorage pra caso mudem o folder do ACS  
 local rs = game.ReplicatedStorage
 local res = {
